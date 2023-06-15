@@ -23,15 +23,15 @@ var banner = [
 ].join('\n')
 
 gulp.task('clean', function () {
-    return gulp.src('dist')
+    return gulp.src('dist', { allowEmpty: true })
         .pipe(
             clean({
-                force: true
+                force: true,
             })
         );
 });
 
-gulp.task('uglify', ['clean'], function () {
+gulp.task('uglify', gulp.series('clean', function () {
     return gulp.src('src/*.js')
         .pipe(
             uglify()
@@ -49,6 +49,6 @@ gulp.task('uglify', ['clean'], function () {
         .pipe(
             gulp.dest('dist')
         );
-});
+}));
 
-gulp.task('default', ['clean', 'uglify']);
+gulp.task('default', gulp.series('clean', 'uglify'));

@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/idiotWu/jQuery-TOC",
   "devDependencies": {
-    "gulp": "^3.8.11",
+    "gulp": "^4.0.2",
     "gulp-clean": "^0.3.1",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.2.0"

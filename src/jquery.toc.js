@@ -31,12 +31,12 @@
      *
      * @return {jQuery} list
      */
-    var createList = function ($wrapper, count) {
+    var createList = function ($wrapper, count, itemClass, childrenClass) {
         while (count--) {
-            $wrapper = $('<ol/>').appendTo($wrapper);
+            $wrapper = $('<ol/>').addClass(childrenClass).appendTo($wrapper);
 
             if (count) {
-                $wrapper = $('<li/>').appendTo($wrapper);
+                $wrapper = $('<li/>').addClass(itemClass).appendTo($wrapper);
             }
         }
 
@@ -69,7 +69,7 @@
         return function ($src, $target, index) {
             var content = $src.text();
             var pre = prefix + '-' + index;
-            $target.text(content);
+            $("<span />").addClass("toc-text").text(content).appendTo($target);
 
             var src = $src[0];
             var target = $target[0];
@@ -91,8 +91,12 @@
     var buildTOC = function (options) {
         var selector = options.selector;
         var scope = options.scope;
+        var rootClass = options.rootClass;
+        var itemClass = options.itemClass;
+        var linkClass = options.linkClass;
+        var childrenClass = options.childrenClass;
 
-        var $ret = $('<ol/>');
+        var $ret = $('<ol/>').addClass(rootClass);
         var $wrapper = $ret;
         var $lastLi = null;
 
@@ -106,7 +110,7 @@
                 var offset = currentDepth - prevDepth;
 
                 if (offset > 0) {
-                    $wrapper = createList($lastLi, offset);
+                    $wrapper = createList($lastLi, offset, itemClass, childrenClass);
                 }
 
                 if (offset < 0) {
@@ -126,8 +130,8 @@
                     $wrapper = $ret;
                 }
 
-                var $li = $('<li/>');
-                var $a = $('<a/>');
+                var $li = $('<li/>').addClass(itemClass);
+                var $a = $('<a/>').addClass(linkClass);
 
                 _setAttrs($(elem), $a, index);
 
@@ -155,7 +159,11 @@
             selector: 'h1, h2, h3, h4, h5, h6',
             scope: 'body',
             overwrite: false,
-            prefix: 'toc'
+            prefix: 'toc',
+            rootClass: "toc",
+            itemClass: "toc-item",
+            linkClass: "toc-link",
+            childrenClass: "toc-child"
         };
 
         options = $.extend(defaultOpts, options);
